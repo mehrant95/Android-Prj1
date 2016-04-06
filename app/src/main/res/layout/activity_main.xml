@@ -3,13 +3,106 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/sample_main_layout">
+    android:id="@+id/sample_main_layout"
+    android:background="@color/white">
 
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button"
-        android:layout_gravity="center_horizontal" />
+    <LinearLayout
+        android:id="@+id/anim_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="5"
+        android:gravity="center">
+
+            <ImageView
+                android:id="@+id/image_anim"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/golang"
+                android:adjustViewBounds="true"
+                android:scaleType="fitEnd"/>
+
+        </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/game_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/custom_backround_game_layout"
+        android:layout_margin="10dp"
+        android:layout_weight="7">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/golang"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/buttons_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="4"
+        android:background="@color/gray">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+                    <Button
+                        android:id="@+id/left"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@android:color/holo_blue_dark"
+                        android:text="L"
+                        android:layout_margin="5dp"/>
+                    <LinearLayout
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <Button
+                            android:id="@+id/up"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@android:color/holo_blue_dark"
+                            android:text="U"
+                            android:layout_margin="5dp"/>
+
+                        <Button
+                            android:id="@+id/down"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@android:color/holo_blue_dark"
+                            android:text="D"
+                            android:layout_margin="5dp"/>
+
+                    </LinearLayout>
+                <Button
+                    android:id="@+id/right"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@android:color/holo_blue_dark"
+                    android:text="R"
+                    android:layout_margin="5dp"/>
+
+            </LinearLayout>
+        <ImageView
+            android:layout_width="30dip"
+            android:layout_height="30dip"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dip"
+            android:layout_marginRight="0dip"
+            android:background="@drawable/custom_menu"/>
+    </RelativeLayout>
+
+
 </LinearLayout>

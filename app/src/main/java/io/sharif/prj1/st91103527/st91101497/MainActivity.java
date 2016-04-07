@@ -6,8 +6,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,10 +17,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        LinearLayout l=(LinearLayout)findViewById(R.id.sample_main_layout);
-        TextView tv=new TextView(getApplicationContext());
-        tv.setText("alakieeee!!!");
-        l.addView(tv);
+
+        // Gopher button listeners
+        setGopherButtons();
+
+    }
+
+    private void setGopherButtons() {
+
+
+        View positiveButton = findViewById(R.id.gopher_image);
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)positiveButton.getLayoutParams();
+        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        positiveButton.setLayoutParams(layoutParams);
+
+//        ImageView img = (ImageView) findViewById(R.id.gopher_image);
+//
+//
+//
+//        img.animate().x(50).y(100).setDuration(1000).start();
+
     }
 
 }

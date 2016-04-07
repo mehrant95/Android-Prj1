@@ -8,4 +8,5 @@
     <color name="gray">#AAAAAA</color>
     <color name="yellow">#FFFF00</color>
     <color name="yellow_dark">#CCCC00</color>
+    <color name="colorGopherBackground">#FF9900</color>
 </resources>

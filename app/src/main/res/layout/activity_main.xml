@@ -20,7 +20,7 @@
                 android:id="@+id/image_anim"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@drawable/golang"
+                android:background="@drawable/gopher"
                 android:adjustViewBounds="true"
                 android:scaleType="fitEnd"/>
 
@@ -30,14 +30,15 @@
         android:id="@+id/game_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@drawable/custom_backround_game_layout"
+        android:background="@color/colorGopherBackground"
         android:layout_margin="10dp"
         android:layout_weight="7">
 
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@drawable/golang"
+            android:background="@drawable/gopher"
+            android:id="@+id/gopher_image"
             />
     </RelativeLayout>
 

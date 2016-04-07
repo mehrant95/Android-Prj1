@@ -98,6 +98,7 @@
 
             </LinearLayout>
         <ImageView
+            android:id="@+id/popup_menu_btn"
             android:layout_width="30dip"
             android:layout_height="30dip"
             android:layout_alignParentRight="true"

@@ -6,14 +6,18 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.RelativeLayout;
+import android.widget.PopupMenu.OnMenuItemClickListener;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMenuItemClickListener {
 
     private View gopherImage;
 
@@ -29,6 +33,37 @@ public class MainActivity extends AppCompatActivity {
         // Gopher button listeners
         setGopherButtons();
 
+        // set popup menu
+        setPopupMenu();
+    }
+
+    private void setPopupMenu() {
+
+        findViewById(R.id.popup_menu_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                PopupMenu popupMenu = new PopupMenu(MainActivity.this, v);
+                popupMenu.setOnMenuItemClickListener(MainActivity.this);
+                popupMenu.inflate(R.menu.popup_menu);
+                popupMenu.show();
+
+            }
+        });
+
+    }
+
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.save_game:
+                Toast.makeText(this, "Comedy Clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.new_game:
+                Toast.makeText(this, "Movies Clicked", Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+        return true;
     }
 
     private void setGopherButtons() {

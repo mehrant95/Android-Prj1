@@ -2,5 +2,6 @@
     <string name="app_name">Prj1</string>
     <string name="title_activity_main">prj1</string>
     <string name="save_game">Save Game</string>
-    <string name="new_game">New Game</string>
+    <string name="game_saved">Game Saved!</string>
+    <string name="game_start">New Game Started!</string>
 </resources>

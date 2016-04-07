@@ -1,16 +1,13 @@
 package io.sharif.prj1.st91103527.st91101497;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.RelativeLayout;
@@ -56,14 +53,30 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save_game:
-                Toast.makeText(this, "Comedy Clicked", Toast.LENGTH_SHORT).show();
+                showCustomToast(getString(R.string.game_saved));
                 break;
             case R.id.new_game:
-                Toast.makeText(this, "Movies Clicked", Toast.LENGTH_SHORT).show();
+                showCustomToast(getString(R.string.game_start));
                 break;
         }
-
         return true;
+    }
+
+    private void showCustomToast(String str) {
+
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.toast_layout,
+                (ViewGroup) findViewById(R.id.toast_layout_root));
+
+        TextView text = (TextView) layout.findViewById(R.id.text);
+        text.setText(str);
+
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
+
     }
 
     private void setGopherButtons() {

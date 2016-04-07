@@ -11,11 +11,13 @@ import android.text.SpannableString;
 import android.text.TextPaint;
 import android.text.style.CharacterStyle;
 import android.text.style.UpdateAppearance;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -27,20 +29,42 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
 
     private View gopherImage;
 
-    private RelativeLayout.LayoutParams gopherImageLayout;
+    private float centerX, centerY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // initialize
         gopherImage = findViewById(R.id.gopher_image);
+
+        // listen for gopher image position
+        listenGopherImage();
 
         // Gopher button listeners
         setGopherButtons();
 
         // set popup menu
         setPopupMenu();
+    }
+
+    private void listenGopherImage() {
+
+        ((View) (gopherImage.getParent())).getViewTreeObserver().addOnGlobalLayoutListener(
+
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+
+                        centerX = gopherImage.getX();
+
+                        centerY = gopherImage.getY();
+
+                        ((View) (gopherImage.getParent())).getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                });
+
     }
 
     private void setPopupMenu() {
@@ -66,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
                 break;
             case R.id.new_game:
                 showCustomToast(getString(R.string.game_start));
+                centerGopherImage();
                 break;
         }
         return true;
@@ -97,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
             @Override
             public void onClick(View v) {
 
-                gopherImage.animate().x(gopherImage.getX()+10).setDuration(500).start();
+                gopherImage.animate().x(gopherImage.getX()-10).setDuration(500).start();
 
             }
         });
@@ -133,15 +158,7 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
 
     private void centerGopherImage() {
 
-        if (gopherImage == null)
-            gopherImage = findViewById(R.id.gopher_image);
-
-        if (gopherImageLayout == null)
-            gopherImageLayout = (RelativeLayout.LayoutParams) gopherImage.getLayoutParams();
-
-        gopherImageLayout.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-
-        gopherImage.setLayoutParams(gopherImageLayout);
+        gopherImage.animate().x(centerX).y(centerY).setDuration(1000).start();
 
     }
 

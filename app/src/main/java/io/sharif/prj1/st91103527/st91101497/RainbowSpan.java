@@ -28,7 +28,7 @@ public class RainbowSpan extends CharacterStyle implements UpdateAppearance {
         matrix.setRotate(90);
         shader.setLocalMatrix(matrix);
         paint.setShader(shader);
-        
+
     }
 
 }

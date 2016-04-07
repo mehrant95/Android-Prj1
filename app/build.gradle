@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "io.sharif.prj1.st91103527.st91101497"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"

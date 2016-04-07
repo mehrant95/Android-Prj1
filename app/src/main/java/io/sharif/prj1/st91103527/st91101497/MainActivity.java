@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -22,9 +21,11 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
 
     private View gopherImage;
 
-    private float centerX, centerY, boardWidth, boardHeight;
+    private float centerX, centerY, boardWidth, boardHeight, next_pos;
 
-    private static float next_pos;
+    private final float delta_x = 10;
+
+    private final long delta_t = 500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +70,8 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
                         loadGame();
 
                         // delete listener
-                        ((View) (gopherImage.getParent())).getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        ((View) (gopherImage.getParent())).getViewTreeObserver()
+                                .removeOnGlobalLayoutListener(this);
                     }
                 });
 
@@ -154,11 +156,11 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
             @Override
             public void onClick(View v) {
 
-                next_pos = gopherImage.getX() - 10;
+                next_pos = gopherImage.getX() - delta_x;
 
                 if (next_pos < 0) next_pos = 0;
 
-                gopherImage.animate().x(next_pos).setDuration(500).start();
+                gopherImage.animate().x(next_pos).setDuration(delta_t).start();
 
             }
         });
@@ -167,12 +169,12 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
             @Override
             public void onClick(View v) {
 
-                next_pos = gopherImage.getX() + 10;
+                next_pos = gopherImage.getX() + delta_x;
 
                 if (next_pos + gopherImage.getWidth() > boardWidth)
                     next_pos = boardWidth - gopherImage.getWidth();
 
-                gopherImage.animate().x(next_pos).setDuration(500).start();
+                gopherImage.animate().x(next_pos).setDuration(delta_t).start();
 
             }
         });
@@ -181,11 +183,11 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
             @Override
             public void onClick(View v) {
 
-                next_pos = gopherImage.getY() - 10;
+                next_pos = gopherImage.getY() - delta_x;
 
                 if (next_pos < 0) next_pos = 0;
 
-                gopherImage.animate().y(next_pos).setDuration(500).start();
+                gopherImage.animate().y(next_pos).setDuration(delta_t).start();
 
             }
         });
@@ -194,12 +196,12 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
             @Override
             public void onClick(View v) {
 
-                next_pos = gopherImage.getY() + 10;
+                next_pos = gopherImage.getY() + delta_x;
 
                 if (next_pos + gopherImage.getHeight() > boardHeight)
                     next_pos = boardHeight - gopherImage.getHeight();
 
-                gopherImage.animate().y(next_pos).setDuration(500).start();
+                gopherImage.animate().y(next_pos).setDuration(delta_t).start();
 
             }
         });

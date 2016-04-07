@@ -1,7 +1,16 @@
 package io.sharif.prj1.st91103527.st91101497;
 
+import android.content.Context;
+import android.graphics.LinearGradient;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableString;
+import android.text.TextPaint;
+import android.text.style.CharacterStyle;
+import android.text.style.UpdateAppearance;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -68,11 +77,14 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
         View layout = inflater.inflate(R.layout.toast_layout,
                 (ViewGroup) findViewById(R.id.toast_layout_root));
 
+        SpannableString spannableString = new SpannableString(str);
+        spannableString.setSpan(new RainbowSpan(this), 0, str.length(), 0);
+
         TextView text = (TextView) layout.findViewById(R.id.text);
-        text.setText(str);
+        text.setText(spannableString);
 
         Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setGravity(Gravity.CENTER, 0, 0);
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(layout);
         toast.show();

@@ -1,8 +1,8 @@
 package io.sharif.prj1.st91103527.st91101497;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,12 +14,18 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.text.SpannableString;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.Toast;
 
@@ -29,12 +35,24 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
     private ImageView rotatingGopher;
     private RelativeLayout.LayoutParams gopherImageLayout;
     private RotateAnimation rotateGopher;
+
+    private float centerX, centerY, boardWidth, boardHeight, next_pos;
+
+    private final float delta_x = 10;
+
+    private final long delta_t = 500;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         createMainMenu();
+
+        // initialize
         gopherImage = findViewById(R.id.gopher_image);
+
+        // listen for gopher image position set in parent relative layout
+        listenGopherImage();
 
         // Gopher button listeners
         setGopherButtons();
@@ -44,6 +62,38 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
 
         //rotate anim
         startRotateAnim();
+    }
+
+    private void listenGopherImage() {
+
+        ((View) (gopherImage.getParent())).getViewTreeObserver().addOnGlobalLayoutListener(
+
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+
+                        View parent = (View)gopherImage.getParent();
+
+                        ViewGroup.MarginLayoutParams lp =
+                                (ViewGroup.MarginLayoutParams) parent.getLayoutParams();
+
+                        boardWidth = parent.getWidth();
+
+                        boardHeight = parent.getHeight();
+
+                        centerX = (boardWidth - gopherImage.getWidth()) / 2;
+
+                        centerY = (boardHeight - gopherImage.getHeight()) / 2;
+
+                        // load previous position
+                        loadGame();
+
+                        // delete listener
+                        ((View) (gopherImage.getParent())).getViewTreeObserver()
+                                .removeOnGlobalLayoutListener(this);
+                    }
+                });
+
     }
 
     private void setPopupMenu() {
@@ -65,14 +115,58 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save_game:
-                Toast.makeText(this, "Comedy Clicked", Toast.LENGTH_SHORT).show();
+                showCustomToast(getString(R.string.game_saved));
+                saveGame();
                 break;
             case R.id.new_game:
-                Toast.makeText(this, "Movies Clicked", Toast.LENGTH_SHORT).show();
+                showCustomToast(getString(R.string.game_start));
+                centerGopherImage();
                 break;
         }
-
         return true;
+    }
+
+    private void saveGame() {
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putFloat("x_position", gopherImage.getX());
+        editor.putFloat("y_position", gopherImage.getY());
+
+        editor.commit();
+
+    }
+
+    private void loadGame() {
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        gopherImage.animate()
+                .x(prefs.getFloat("x_position", centerX))
+                .y(prefs.getFloat("y_position", centerY))
+                .setDuration(1000).start();
+
+    }
+
+    private void showCustomToast(String str) {
+
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.toast_layout,
+                (ViewGroup) findViewById(R.id.toast_layout_root));
+
+        SpannableString spannableString = new SpannableString(str);
+        spannableString.setSpan(new RainbowSpan(this), 0, str.length(), 0);
+
+        TextView text = (TextView) layout.findViewById(R.id.text);
+        text.setText(spannableString);
+
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
+
     }
 
     private void setGopherButtons() {
@@ -81,7 +175,11 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
             @Override
             public void onClick(View v) {
 
-                gopherImage.animate().x(gopherImage.getX()+10).setDuration(500).start();
+                next_pos = gopherImage.getX() - delta_x;
+
+                if (next_pos < 0) next_pos = 0;
+
+                gopherImage.animate().x(next_pos).setDuration(delta_t).start();
 
             }
         });
@@ -90,7 +188,12 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
             @Override
             public void onClick(View v) {
 
-                gopherImage.animate().x(gopherImage.getX()+10).setDuration(500).start();
+                next_pos = gopherImage.getX() + delta_x;
+
+                if (next_pos + gopherImage.getWidth() > boardWidth)
+                    next_pos = boardWidth - gopherImage.getWidth();
+
+                gopherImage.animate().x(next_pos).setDuration(delta_t).start();
 
             }
         });
@@ -99,7 +202,11 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
             @Override
             public void onClick(View v) {
 
-                gopherImage.animate().y(gopherImage.getY()-10).setDuration(500).start();
+                next_pos = gopherImage.getY() - delta_x;
+
+                if (next_pos < 0) next_pos = 0;
+
+                gopherImage.animate().y(next_pos).setDuration(delta_t).start();
 
             }
         });
@@ -108,7 +215,12 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
             @Override
             public void onClick(View v) {
 
-                gopherImage.animate().y(gopherImage.getY()+10).setDuration(500).start();
+                next_pos = gopherImage.getY() + delta_x;
+
+                if (next_pos + gopherImage.getHeight() > boardHeight)
+                    next_pos = boardHeight - gopherImage.getHeight();
+
+                gopherImage.animate().y(next_pos).setDuration(delta_t).start();
 
             }
         });
@@ -117,15 +229,8 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
 
     private void centerGopherImage() {
 
-        if (gopherImage == null)
-            gopherImage = findViewById(R.id.gopher_image);
-
-        if (gopherImageLayout == null)
-            gopherImageLayout = (RelativeLayout.LayoutParams) gopherImage.getLayoutParams();
-
-        gopherImageLayout.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-
-        gopherImage.setLayoutParams(gopherImageLayout);
+        // position to center
+        gopherImage.animate().x(centerX).y(centerY).setDuration(1000).start();
 
     }
 
@@ -156,7 +261,6 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
 
     public void createMainMenu(){
        MenuInflater inflater= getMenuInflater();
-        inflater.infl
 
     }
 

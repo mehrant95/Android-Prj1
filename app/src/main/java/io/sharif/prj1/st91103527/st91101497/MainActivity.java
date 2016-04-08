@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
         startRotateAnim();
     }
 
-    private void listenGopherImage() {
+    private void listenGopherImage() { // 91101497
 
         ((View) (gopherImage.getParent())).getViewTreeObserver().addOnGlobalLayoutListener(
 
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
 
     }
 
-    private void setPopupMenu() {
+    private void setPopupMenu() { // 91101497
 
         findViewById(R.id.popup_menu_btn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
 
     }
 
-    public boolean onMenuItemClick(MenuItem item) {
+    public boolean onMenuItemClick(MenuItem item) { // 91101497
         switch (item.getItemId()) {
             case R.id.save_game:
                 showCustomToast(getString(R.string.game_saved));
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
         return true;
     }
 
-    private void saveGame() {
+    private void saveGame() { // 91101497
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = prefs.edit();
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
 
     }
 
-    private void loadGame() {
+    private void loadGame() { // 91101497
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
 
     }
 
-    private void showCustomToast(String str) {
+    private void showCustomToast(String str) { // 91101497
 
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.toast_layout,
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
 
     }
 
-    private void setGopherButtons() {
+    private void setGopherButtons() { // 91101497
 
         ((Button) findViewById(R.id.leftBtn)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
 
     }
 
-    private void centerGopherImage() {
+    private void centerGopherImage() { // 91101497
 
         // position to center
         gopherImage.animate().x(centerX).y(centerY).setDuration(1000).start();

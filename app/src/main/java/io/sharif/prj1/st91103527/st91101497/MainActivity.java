@@ -6,8 +6,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,14 +26,14 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity implements OnMenuItemClickListener {
 
     private View gopherImage;
-
+    private ImageView rotatingGopher;
     private RelativeLayout.LayoutParams gopherImageLayout;
-
+    private RotateAnimation rotateGopher;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        createMainMenu();
         gopherImage = findViewById(R.id.gopher_image);
 
         // Gopher button listeners
@@ -35,6 +41,9 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
 
         // set popup menu
         setPopupMenu();
+
+        //rotate anim
+        startRotateAnim();
     }
 
     private void setPopupMenu() {
@@ -117,6 +126,37 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
         gopherImageLayout.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 
         gopherImage.setLayoutParams(gopherImageLayout);
+
+    }
+
+    public void startRotateAnim(){//91103527
+        rotatingGopher = (ImageView) findViewById(R.id.image_anim);
+
+        RotateAnimation anim =new RotateAnimation(0.0f, 360.0f,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        anim.setRepeatCount(Animation.INFINITE);
+        anim.setDuration(1000);
+        anim.setInterpolator(new LinearInterpolator());
+
+        rotateGopher=anim;
+        rotatingGopher.startAnimation(rotateGopher);
+    }
+
+    @Override
+    protected void onPause() {//91103527
+        super.onPause();
+        rotateGopher.cancel();
+    }
+
+    @Override
+    protected void onResume() {//91103527
+        super.onResume();
+        rotateGopher.reset();
+        rotateGopher.start();
+    }
+
+    public void createMainMenu(){
+       MenuInflater inflater= getMenuInflater();
+        inflater.infl
 
     }
 

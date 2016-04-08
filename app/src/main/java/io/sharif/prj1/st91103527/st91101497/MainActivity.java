@@ -1,5 +1,6 @@
 package io.sharif.prj1.st91103527.st91101497;
 
+import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,8 +22,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -46,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        createMainMenu();
 
         // initialize
         gopherImage = findViewById(R.id.gopher_image);
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
                     @Override
                     public void onGlobalLayout() {
 
-                        View parent = (View)gopherImage.getParent();
+                        View parent = (View) gopherImage.getParent();
 
                         ViewGroup.MarginLayoutParams lp =
                                 (ViewGroup.MarginLayoutParams) parent.getLayoutParams();
@@ -259,8 +261,29 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
         rotateGopher.start();
     }
 
-    public void createMainMenu(){
-       MenuInflater inflater= getMenuInflater();
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater= getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.about_us:
+                aboutUs();
+                return true;
+        }
+        return false;
+    }
+    public void aboutUs(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        builder.setView(inflater.inflate(R.layout.dialog_layout,null));
+        AlertDialog dialog=builder.create();
+        dialog.show();
 
     }
 

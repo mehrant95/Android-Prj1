@@ -9,7 +9,7 @@ import android.text.TextPaint;
 import android.text.style.CharacterStyle;
 import android.text.style.UpdateAppearance;
 
-public class RainbowSpan extends CharacterStyle implements UpdateAppearance {
+public class RainbowSpan extends CharacterStyle implements UpdateAppearance { // 91101497
 
     private final int[] colors;
 
